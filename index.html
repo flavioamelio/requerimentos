@@ -33,7 +33,6 @@
             margin: 0 auto;
         }
 
-        /* Banner imagem no topo */
         .banner-top {
             width: 100%;
             margin-bottom: 20px;
@@ -75,12 +74,6 @@
             -webkit-background-clip: text;
             color: transparent;
             margin-bottom: 0.5rem;
-        }
-
-        .card-header p {
-            color: #F2CAA7;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
         }
 
         .badge-dci {
@@ -403,7 +396,6 @@
 </div>
 
 <div class="dci-container">
-    <!-- IMAGEM DO BANNER NO TOPO -->
     <div class="banner-top">
         <img src="https://i.ibb.co/QF8KGnL5/9sxfxt10-1.png" alt="DCI - Departamento de Comunicação e Interatividade">
     </div>
@@ -411,7 +403,6 @@
     <div class="card-dci">
         <div class="card-header">
             <h1>📋 DCI - DEPARTAMENTO DE COMUNICAÇÃO E INTERATIVIDADE</h1>
-            </div>
         </div>
 
         <div class="form-panel">
@@ -435,7 +426,6 @@
                 </div>
             </div>
 
-            <!-- FORMULÁRIOS -->
             <div id="form-entrada" class="form-dci">
                 <div class="input-group"><label>Nickname</label><input type="text" id="entrada-nome" placeholder="Ex: João Silva"></div>
                 <div class="input-group"><label>Data de entrada</label><input type="date" id="entrada-data"></div>
@@ -702,6 +692,10 @@
             try{
                 await postarNoTopico(mensagemFinal);
                 alert('✅ Requerimento postado com sucesso no tópico DCI!');
+                
+                // 🔥 REDIRECIONA NA MESMA GUIA
+                window.location.href = '/viewtopic.php?t=37262';
+                
                 currentFormElement.reset();
                 limparErrosForm(currentFormElement);
                 modal.classList.remove('active');
