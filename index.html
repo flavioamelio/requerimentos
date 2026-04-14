@@ -54,7 +54,8 @@
             border-radius: 36px;
             border: 1px solid rgba(242, 186, 82, 0.25);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            overflow: hidden;
+            overflow: visible;
+            position: relative;
         }
 
         .card-header {
@@ -76,33 +77,17 @@
             margin-bottom: 0.5rem;
         }
 
-        .badge-dci {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(29, 64, 57, 0.7);
-            padding: 6px 16px;
-            border-radius: 60px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #F2CAA7;
-            border: 1px solid rgba(242, 186, 82, 0.4);
-            margin-top: 12px;
-        }
-
-        .badge-dci i {
-            color: #F2BA52;
-            font-size: 0.8rem;
-        }
-
         .form-panel {
             padding: 2rem;
+            position: relative;
+            z-index: 5;
         }
 
         .dropdown-dci {
             width: 100%;
             position: relative;
             margin-bottom: 32px;
+            z-index: 100;
         }
 
         .dropdown-btn {
@@ -135,19 +120,20 @@
 
         .dropdown-menu {
             position: absolute;
-            top: calc(100% + 8px);
+            top: 100%;
             left: 0;
             width: 100%;
             background: #1D4039;
             border-radius: 24px;
             border: 1px solid rgba(242, 186, 82, 0.5);
             backdrop-filter: blur(12px);
-            max-height: 340px;
+            max-height: 320px;
             overflow-y: auto;
-            z-index: 50;
+            z-index: 1000;
             display: none;
             flex-direction: column;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            margin-top: 8px;
         }
 
         .dropdown-menu.show {
@@ -161,7 +147,7 @@
         }
 
         .dropdown-menu::-webkit-scrollbar {
-            width: 5px;
+            width: 6px;
         }
         .dropdown-menu::-webkit-scrollbar-track {
             background: #0C5944;
@@ -181,6 +167,10 @@
             transition: 0.2s;
             border-bottom: 1px solid rgba(242, 202, 167, 0.15);
             font-weight: 500;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
         }
 
         .dropdown-item i {
@@ -301,7 +291,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
         }
 
         .modal-dci.active {
@@ -346,7 +336,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: 99999;
             transition: 0.5s;
         }
 
@@ -382,6 +372,9 @@
             .card-header {
                 padding: 1.2rem;
             }
+            .dropdown-menu {
+                max-height: 280px;
+            }
         }
     </style>
 </head>
@@ -402,7 +395,7 @@
 
     <div class="card-dci">
         <div class="card-header">
-            <h1>📋 DCI - DEPARTAMENTO DE COMUNICAÇÃO E INTERATIVIDADE</h1>
+            <h1>REQUERIMENTOS DE MEMBROS</h1>
         </div>
 
         <div class="form-panel">
@@ -434,81 +427,81 @@
             </div>
 
             <div id="form-promocao" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="promocao-nome"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="promocao-nome" placeholder="Ex: Chefa"></div>
                 <div class="input-group"><label>Cargo atual</label><select id="promocao-cargo-atual"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
                 <div class="input-group"><label>Novo cargo</label><select id="promocao-novo-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
-                <div class="input-group"><label>Motivo</label><input type="text" id="promocao-motivo"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="promocao-motivo" placeholder="Ex: Desempenho exemplar"></div>
                 <div class="input-group"><label>Data</label><input type="date" id="promocao-data"></div>
                 <button class="btn-submit" data-key="promocao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-promocao">Preencha todos os campos.</div>
             </div>
 
             <div id="form-rebaixamento" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="rebaixamento-nome"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="rebaixamento-nome" placeholder="Ex: Chefa"></div>
                 <div class="input-group"><label>Cargo atual</label><select id="rebaixamento-cargo-atual"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
                 <div class="input-group"><label>Novo cargo</label><select id="rebaixamento-novo-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
-                <div class="input-group"><label>Motivo</label><input type="text" id="rebaixamento-motivo"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="rebaixamento-motivo" placeholder="Ex: Inatividade"></div>
                 <div class="input-group"><label>Data</label><input type="date" id="rebaixamento-data"></div>
                 <button class="btn-submit" data-key="rebaixamento">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-rebaixamento">Preencha todos os campos.</div>
             </div>
 
             <div id="form-expulsao" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="expulsao-nome"></div>
-                <div class="input-group"><label>Motivo</label><input type="text" id="expulsao-motivo"></div>
-                <div class="input-group"><label>Comprovações</label><input type="text" id="expulsao-comprovacoes"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="expulsao-nome" placeholder="Ex: Chefa"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="expulsao-motivo" placeholder="Ex: Violação das regras"></div>
+                <div class="input-group"><label>Comprovações</label><input type="text" id="expulsao-comprovacoes" placeholder="Ex: Link do print"></div>
                 <button class="btn-submit" data-key="expulsao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-expulsao">Preencha todos os campos.</div>
             </div>
 
             <div id="form-advertencia" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="advertencia-nome"></div>
-                <div class="input-group"><label>Motivo</label><input type="text" id="advertencia-motivo"></div>
-                <div class="input-group"><label>Permissão de</label><input type="text" id="advertencia-permissao"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="advertencia-nome" placeholder="Ex: Chefa"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="advertencia-motivo" placeholder="Ex: Descumprimento de norma"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="advertencia-permissao" placeholder="Ex: Diretor Fulano"></div>
                 <button class="btn-submit" data-key="advertencia">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-advertencia">Preencha todos os campos.</div>
             </div>
 
             <div id="form-licenca" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="licenca-nome"></div>
-                <div class="input-group"><label>Dias (mínimo 7)</label><input type="number" id="licenca-dias" min="7"></div>
-                <div class="input-group"><label>Permissão de</label><input type="text" id="licenca-permissao"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="licenca-nome" placeholder="Ex: Chefa"></div>
+                <div class="input-group"><label>Dias (mínimo 7)</label><input type="number" id="licenca-dias" min="7" placeholder="7"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="licenca-permissao" placeholder="Ex: Diretor Fulano"></div>
                 <button class="btn-submit" data-key="licenca">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-licenca">Preencha os campos (mín 7 dias).</div>
             </div>
 
             <div id="form-saida" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="saida-nome"></div>
-                <div class="input-group"><label>Motivo</label><input type="text" id="saida-motivo"></div>
-                <div class="input-group"><label>Permissão de</label><input type="text" id="saida-permissao"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="saida-nome" placeholder="Ex: Chefa"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="saida-motivo" placeholder="Ex: Motivos pessoais"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="saida-permissao" placeholder="Ex: Diretor Fulano"></div>
                 <button class="btn-submit" data-key="saida">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-saida">Preencha todos os campos.</div>
             </div>
 
             <div id="form-prolongamento" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="prolongamento-nome"></div>
-                <div class="input-group"><label>Dias adicionais</label><input type="number" id="prolongamento-dias" min="1"></div>
-                <div class="input-group"><label>Permissão de</label><input type="text" id="prolongamento-permissao"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="prolongamento-nome" placeholder="Ex: Chefa"></div>
+                <div class="input-group"><label>Dias adicionais</label><input type="number" id="prolongamento-dias" min="1" placeholder="1"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="prolongamento-permissao" placeholder="Ex: Diretor Fulano"></div>
                 <button class="btn-submit" data-key="prolongamento">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-prolongamento">Preencha todos os campos.</div>
             </div>
 
             <div id="form-retorno" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="retorno-nome"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="retorno-nome" placeholder="Ex: Chefa"></div>
                 <button class="btn-submit" data-key="retorno">📨 ENVIAR REQUERIMENTO</button>
-                <div class="erro-validacao" id="err-retorno">Preencha o nome.</div>
+                <div class="erro-validacao" id="err-retorno">Preencha o nickname.</div>
             </div>
 
             <div id="form-alteracao" class="form-dci">
                 <div class="input-group"><label>Cargo</label><select id="alteracao-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
-                <div class="input-group"><label>Nickname na listagem</label><input type="text" id="alteracao-nome-antigo"></div>
-                <div class="input-group"><label>Novo nickname</label><input type="text" id="alteracao-nome-novo"></div>
+                <div class="input-group"><label>Nickname na listagem</label><input type="text" id="alteracao-nome-antigo" placeholder="Ex: Chefa Antigo"></div>
+                <div class="input-group"><label>Novo nickname</label><input type="text" id="alteracao-nome-novo" placeholder="Ex: Chefa Novo"></div>
                 <button class="btn-submit" data-key="alteracao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-alteracao">Preencha os campos.</div>
             </div>
 
             <div id="form-atualizacao" class="form-dci">
-                <div class="input-group"><label>TAG</label><input type="text" id="atualizacao-nome"></div>
+                <div class="input-group"><label>TAG</label><input type="text" id="atualizacao-nome" placeholder="Ex: che"></div>
                 <button class="btn-submit" data-key="atualizacao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-atualizacao">Insira a TAG.</div>
             </div>
@@ -608,7 +601,6 @@
             for(let [campo, valor] of Object.entries(dados)){
                 if(valor) msg += `[b]${campo}:[/b] ${valor}\n`;
             }
-            msg += `\n━━━━━━━━━━━━━━━━━━━━\n[i]Requerimento registrado via sistema DCI.[/i]`;
             return msg;
         }
 
@@ -693,7 +685,6 @@
                 await postarNoTopico(mensagemFinal);
                 alert('✅ Requerimento postado com sucesso no tópico DCI!');
                 
-                // 🔥 REDIRECIONA NA MESMA GUIA
                 window.location.href = '/viewtopic.php?t=37262';
                 
                 currentFormElement.reset();
