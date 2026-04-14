@@ -36,7 +36,7 @@
         .banner-top {
             width: 100%;
             margin-bottom: 20px;
-            border-radius: 32px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
@@ -390,7 +390,7 @@
 
 <div class="dci-container">
     <div class="banner-top">
-        <img src="https://i.ibb.co/QF8KGnL5/9sxfxt10-1.png" alt="DCI - Departamento de Comunicação e Interatividade">
+        <img src="https://i.postimg.cc/85f4zBqZ/9sxfxt10-(1).png" alt="DCI - Departamento de Comunicação e Interatividade">
     </div>
 
     <div class="card-dci">
@@ -463,9 +463,9 @@
             </div>
 
             <div id="form-licenca" class="form-dci">
-                <div class="input-group"><label>Nickname</label><input type="text" id="licenca-nome" placeholder="Ex: Chefa"></div>
-                <div class="input-group"><label>Dias (mínimo 7)</label><input type="number" id="licenca-dias" min="7" placeholder="7"></div>
-                <div class="input-group"><label>Permissão de</label><input type="text" id="licenca-permissao" placeholder="Ex: Diretor Fulano"></div>
+                <div class="input-group"><label>Nickname</label><input type="text" id="licenca-nome" placeholder="Ex: Relic"></div>
+                <div class="input-group"><label>Quantidade de Dias (mínimo 7)</label><input type="number" id="licenca-dias" min="7" placeholder="7"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="licenca-permissao" placeholder="Ex: Almeida_hay"></div>
                 <button class="btn-submit" data-key="licenca">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-licenca">Preencha os campos (mín 7 dias).</div>
             </div>
@@ -489,19 +489,19 @@
             <div id="form-retorno" class="form-dci">
                 <div class="input-group"><label>Nickname</label><input type="text" id="retorno-nome" placeholder="Ex: Chefa"></div>
                 <button class="btn-submit" data-key="retorno">📨 ENVIAR REQUERIMENTO</button>
-                <div class="erro-validacao" id="err-retorno">Preencha o nickname.</div>
+                <div class="erro-validacao" id="err-retorno">Preencha o nome.</div>
             </div>
 
             <div id="form-alteracao" class="form-dci">
                 <div class="input-group"><label>Cargo</label><select id="alteracao-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
-                <div class="input-group"><label>Nickname na listagem</label><input type="text" id="alteracao-nome-antigo" placeholder="Ex: Chefa Antigo"></div>
-                <div class="input-group"><label>Novo nickname</label><input type="text" id="alteracao-nome-novo" placeholder="Ex: Chefa Novo"></div>
+                <div class="input-group"><label>Nickname na listagem</label><input type="text" id="alteracao-nome-antigo" placeholder="Ex: ChefaAntigo"></div>
+                <div class="input-group"><label>Novo nickname</label><input type="text" id="alteracao-nome-novo" placeholder="Ex: ChefaNovo"></div>
                 <button class="btn-submit" data-key="alteracao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-alteracao">Preencha os campos.</div>
             </div>
 
             <div id="form-atualizacao" class="form-dci">
-                <div class="input-group"><label>TAG</label><input type="text" id="atualizacao-nome" placeholder="Ex: che"></div>
+                <div class="input-group"><label>TAG</label><input type="text" id="atualizacao-nome" placeholder="Ex: Chefa"></div>
                 <button class="btn-submit" data-key="atualizacao">📨 ENVIAR REQUERIMENTO</button>
                 <div class="erro-validacao" id="err-atualizacao">Insira a TAG.</div>
             </div>
@@ -581,27 +581,75 @@
             return dados;
         }
 
+        function getTituloFormatado(tipo){
+            const titulos = {
+                'entrada': 'ENTRADA DE MEMBROS',
+                'promocao': 'PROMOÇÃO DE MEMBRO',
+                'rebaixamento': 'REBAIXAMENTO DE MEMBRO',
+                'expulsao': 'EXPULSÃO',
+                'advertencia': 'ADVERTÊNCIA',
+                'licenca': 'LICENÇA / RESERVA',
+                'saida': 'SAÍDA',
+                'prolongamento': 'PROLONGAMENTO DE LICENÇA',
+                'retorno': 'RETORNO DE LICENÇA',
+                'alteracao': 'ALTERAÇÃO DE NICKNAME',
+                'atualizacao': 'ATUALIZAÇÃO DE LISTAGEM'
+            };
+            return titulos[tipo] || 'REQUERIMENTO DCI';
+        }
+
+        function mapearCampoParaRotulo(campoId, valor){
+            const rotulos = {
+                'nome': 'Nickname',
+                'data': 'Data',
+                'cargo-atual': 'Cargo Atual',
+                'novo-cargo': 'Novo Cargo',
+                'motivo': 'Motivo',
+                'comprovacoes': 'Comprovações',
+                'permissao': 'Permissão',
+                'dias': 'Quantidade de Dias',
+                'cargo': 'Cargo',
+                'nome-antigo': 'Nickname na Listagem',
+                'nome-novo': 'Novo Nickname',
+                'tag': 'TAG'
+            };
+            
+            for(let [key, rotulo] of Object.entries(rotulos)){
+                if(campoId.includes(key)){
+                    return { rotulo, valor };
+                }
+            }
+            return { rotulo: campoId, valor };
+        }
+
         function gerarMensagemBBcode(tipo, dados){
-            let titulo = '';
-            switch(tipo){
-                case 'entrada': titulo = 'Entrada de Membros'; break;
-                case 'promocao': titulo = 'Promoção de Membro'; break;
-                case 'rebaixamento': titulo = 'Rebaixamento de Membro'; break;
-                case 'expulsao': titulo = 'Expulsão'; break;
-                case 'advertencia': titulo = 'Advertência'; break;
-                case 'licenca': titulo = 'Licença / Reserva'; break;
-                case 'saida': titulo = 'Saída'; break;
-                case 'prolongamento': titulo = 'Prolongamento de Licença'; break;
-                case 'retorno': titulo = 'Retorno de Licença'; break;
-                case 'alteracao': titulo = 'Alteração de Nickname'; break;
-                case 'atualizacao': titulo = 'Atualização de Listagem'; break;
-                default: titulo = 'Requerimento DCI';
-            }
-            let msg = `[b]📌 ${titulo}[/b]\n\n`;
+            const titulo = getTituloFormatado(tipo);
+            
+            // Constrói a lista de campos
+            let camposHtml = '';
             for(let [campo, valor] of Object.entries(dados)){
-                if(valor) msg += `[b]${campo}:[/b] ${valor}\n`;
+                if(valor && valor.trim() !== ''){
+                    let rotulo = campo;
+                    if(campo === 'Nickname') rotulo = 'Nickname';
+                    else if(campo === 'Data') rotulo = 'Data';
+                    else if(campo === 'Cargo Atual') rotulo = 'Cargo Atual';
+                    else if(campo === 'Novo Cargo') rotulo = 'Novo Cargo';
+                    else if(campo === 'Motivo') rotulo = 'Motivo';
+                    else if(campo === 'Comprovações') rotulo = 'Comprovações';
+                    else if(campo === 'Permissão de') rotulo = 'Permissão';
+                    else if(campo === 'Dias') rotulo = 'Quantidade de Dias';
+                    else if(campo === 'Cargo') rotulo = 'Cargo';
+                    else if(campo === 'Nickname na Listagem') rotulo = 'Nickname na Listagem';
+                    else if(campo === 'Novo Nickname') rotulo = 'Novo Nickname';
+                    else if(campo === 'TAG') rotulo = 'TAG';
+                    
+                    camposHtml += `[color=#174b1a][b]${rotulo}[/b][/color]: ${valor}\n\n`;
+                }
             }
-            return msg;
+            
+            return `[font=Poppins][center][table style="border-color: black; border-radius: 10px; overflow: hidden; width: auto;" bgcolor="#174b1a"][tr][td][size=16][color=#ffffff][b]${titulo}[/b][/color][/size][/font][/td][/tr][/table]
+[size=14][font=Poppins]
+${camposHtml}[/font][/size][/center]`;
         }
 
         async function postarNoTopico(mensagem){
