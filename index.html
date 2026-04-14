@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DCI - Sistema de Requerimentos</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/WSgXo58.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #0a2a24 0%, #051c18 100%);
+            color: #E6F7F3;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dci-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Banner imagem no topo */
+        .banner-top {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .banner-top img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            max-height: 200px;
+        }
+
+        .card-dci {
+            background: rgba(12, 89, 68, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 36px;
+            border: 1px solid rgba(242, 186, 82, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #0C5944;
+            padding: 1.8rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid #F2BA52;
+        }
+
+        .card-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #F2F9F7 0%, #F2CAA7 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            color: #F2CAA7;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .badge-dci {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(29, 64, 57, 0.7);
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #F2CAA7;
+            border: 1px solid rgba(242, 186, 82, 0.4);
+            margin-top: 12px;
+        }
+
+        .badge-dci i {
+            color: #F2BA52;
+            font-size: 0.8rem;
+        }
+
+        .form-panel {
+            padding: 2rem;
+        }
+
+        .dropdown-dci {
+            width: 100%;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .dropdown-btn {
+            width: 100%;
+            background: #1D4039;
+            border: 1px solid #F2BA52;
+            border-radius: 60px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #F2F9F7;
+            transition: all 0.25s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-btn:hover {
+            background: #0C5944;
+            border-color: #F2CAA7;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-btn i {
+            color: #F2BA52;
+            font-size: 1.2rem;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background: #1D4039;
+            border-radius: 24px;
+            border: 1px solid rgba(242, 186, 82, 0.5);
+            backdrop-filter: blur(12px);
+            max-height: 340px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-menu.show {
+            display: flex;
+            animation: fadeDropdown 0.2s ease;
+        }
+
+        @keyframes fadeDropdown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-menu::-webkit-scrollbar {
+            width: 5px;
+        }
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: #0C5944;
+            border-radius: 10px;
+        }
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #F2BA52;
+            border-radius: 10px;
+        }
+
+        .dropdown-item {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid rgba(242, 202, 167, 0.15);
+            font-weight: 500;
+        }
+
+        .dropdown-item i {
+            width: 24px;
+            color: #F2BA52;
+            font-size: 1.1rem;
+        }
+
+        .dropdown-item:hover {
+            background: #0C5944;
+            padding-left: 26px;
+            color: #F2CAA7;
+        }
+
+        .form-dci {
+            display: none;
+            animation: fadeForm 0.3s ease;
+        }
+
+        @keyframes fadeForm {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #F2CAA7;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input, 
+        .input-group select, 
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 18px;
+            background: #1D4039;
+            border: 1px solid #0C5944;
+            border-radius: 28px;
+            font-size: 0.95rem;
+            color: #F2F9F7;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus, 
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #F2BA52;
+            box-shadow: 0 0 0 3px rgba(242, 186, 82, 0.2);
+        }
+
+        .campo-invalido {
+            border-color: #ff7b72 !important;
+            background: #3e1f1c !important;
+        }
+
+        .erro-validacao {
+            color: #ff9e8f;
+            font-size: 0.75rem;
+            margin-top: 6px;
+            margin-left: 12px;
+            display: none;
+        }
+
+        button {
+            background: linear-gradient(95deg, #F2BA52, #F2CAA7);
+            border: none;
+            padding: 14px 18px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #0C2B24;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.25s;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #a3c2bc;
+            border-top: 1px solid rgba(242, 186, 82, 0.25);
+            padding: 20px 2rem 1.5rem;
+        }
+
+        .footer-credit i {
+            color: #F2BA52;
+            margin-right: 5px;
+        }
+
+        .modal-dci {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-dci.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #0C5944;
+            max-width: 450px;
+            width: 90%;
+            border-radius: 36px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid #F2BA52;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-card h3 {
+            font-size: 1.7rem;
+            color: #F2CAA7;
+            margin-bottom: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .modal-actions button {
+            width: auto;
+            padding: 10px 28px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #0a2a24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: 0.5s;
+        }
+
+        .loading-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            background: #1D4039;
+            padding: 2rem;
+            border-radius: 48px;
+            border: 1px solid #F2BA52;
+        }
+
+        .loader-content i {
+            font-size: 3rem;
+            color: #F2BA52;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 1rem;
+            }
+            .card-header h1 {
+                font-size: 1.3rem;
+            }
+            .form-panel {
+                padding: 1.5rem;
+            }
+            .card-header {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+    <div class="loader-content">
+        <i class="fas fa-cogs fa-spin"></i>
+        <h3 style="color:#F2CAA7">DCI System</h3>
+        <p>Carregando requerimentos...</p>
+    </div>
+</div>
+
+<div class="dci-container">
+    <!-- IMAGEM DO BANNER NO TOPO -->
+    <div class="banner-top">
+        <img src="https://i.ibb.co/QF8KGnL5/9sxfxt10-1.png" alt="DCI - Departamento de Comunicação e Interatividade">
+    </div>
+
+    <div class="card-dci">
+        <div class="card-header">
+            <h1>📋 DCI - DEPARTAMENTO DE COMUNICAÇÃO E INTERATIVIDADE</h1>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <div class="dropdown-dci">
+                <div class="dropdown-btn" id="dropdownBtn">
+                    <span id="selectedReqText">Selecione o tipo de requerimento</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-item" data-tipo="entrada"><i class="fas fa-user-plus"></i> Entrada de Membros</div>
+                    <div class="dropdown-item" data-tipo="promocao"><i class="fas fa-arrow-up"></i> Promoção</div>
+                    <div class="dropdown-item" data-tipo="rebaixamento"><i class="fas fa-arrow-down"></i> Rebaixamento</div>
+                    <div class="dropdown-item" data-tipo="expulsao"><i class="fas fa-user-slash"></i> Expulsão</div>
+                    <div class="dropdown-item" data-tipo="advertencia"><i class="fas fa-exclamation-triangle"></i> Advertência</div>
+                    <div class="dropdown-item" data-tipo="licenca"><i class="fas fa-pause-circle"></i> Licença / Reserva</div>
+                    <div class="dropdown-item" data-tipo="saida"><i class="fas fa-sign-out-alt"></i> Saída</div>
+                    <div class="dropdown-item" data-tipo="prolongamento"><i class="fas fa-calendar-plus"></i> Prolongamento de Licença</div>
+                    <div class="dropdown-item" data-tipo="retorno"><i class="fas fa-undo-alt"></i> Retorno de Licença</div>
+                    <div class="dropdown-item" data-tipo="alteracao"><i class="fas fa-signature"></i> Alteração de Nickname</div>
+                    <div class="dropdown-item" data-tipo="atualizacao"><i class="fas fa-sync-alt"></i> Atualização de Listagem</div>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIOS -->
+            <div id="form-entrada" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="entrada-nome" placeholder="Ex: João Silva"></div>
+                <div class="input-group"><label>Data de entrada</label><input type="date" id="entrada-data"></div>
+                <button class="btn-submit" data-key="entrada">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-entrada">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-promocao" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="promocao-nome"></div>
+                <div class="input-group"><label>Cargo atual</label><select id="promocao-cargo-atual"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
+                <div class="input-group"><label>Novo cargo</label><select id="promocao-novo-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="promocao-motivo"></div>
+                <div class="input-group"><label>Data</label><input type="date" id="promocao-data"></div>
+                <button class="btn-submit" data-key="promocao">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-promocao">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-rebaixamento" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="rebaixamento-nome"></div>
+                <div class="input-group"><label>Cargo atual</label><select id="rebaixamento-cargo-atual"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
+                <div class="input-group"><label>Novo cargo</label><select id="rebaixamento-novo-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="rebaixamento-motivo"></div>
+                <div class="input-group"><label>Data</label><input type="date" id="rebaixamento-data"></div>
+                <button class="btn-submit" data-key="rebaixamento">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-rebaixamento">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-expulsao" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="expulsao-nome"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="expulsao-motivo"></div>
+                <div class="input-group"><label>Comprovações</label><input type="text" id="expulsao-comprovacoes"></div>
+                <button class="btn-submit" data-key="expulsao">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-expulsao">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-advertencia" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="advertencia-nome"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="advertencia-motivo"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="advertencia-permissao"></div>
+                <button class="btn-submit" data-key="advertencia">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-advertencia">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-licenca" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="licenca-nome"></div>
+                <div class="input-group"><label>Dias (mínimo 7)</label><input type="number" id="licenca-dias" min="7"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="licenca-permissao"></div>
+                <button class="btn-submit" data-key="licenca">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-licenca">Preencha os campos (mín 7 dias).</div>
+            </div>
+
+            <div id="form-saida" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="saida-nome"></div>
+                <div class="input-group"><label>Motivo</label><input type="text" id="saida-motivo"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="saida-permissao"></div>
+                <button class="btn-submit" data-key="saida">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-saida">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-prolongamento" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="prolongamento-nome"></div>
+                <div class="input-group"><label>Dias adicionais</label><input type="number" id="prolongamento-dias" min="1"></div>
+                <div class="input-group"><label>Permissão de</label><input type="text" id="prolongamento-permissao"></div>
+                <button class="btn-submit" data-key="prolongamento">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-prolongamento">Preencha todos os campos.</div>
+            </div>
+
+            <div id="form-retorno" class="form-dci">
+                <div class="input-group"><label>Nickname</label><input type="text" id="retorno-nome"></div>
+                <button class="btn-submit" data-key="retorno">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-retorno">Preencha o nome.</div>
+            </div>
+
+            <div id="form-alteracao" class="form-dci">
+                <div class="input-group"><label>Cargo</label><select id="alteracao-cargo"><option>Assistente</option><option>Secretário</option><option>Vice-Diretor</option><option>Diretor</option></select></div>
+                <div class="input-group"><label>Nickname na listagem</label><input type="text" id="alteracao-nome-antigo"></div>
+                <div class="input-group"><label>Novo nickname</label><input type="text" id="alteracao-nome-novo"></div>
+                <button class="btn-submit" data-key="alteracao">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-alteracao">Preencha os campos.</div>
+            </div>
+
+            <div id="form-atualizacao" class="form-dci">
+                <div class="input-group"><label>TAG</label><input type="text" id="atualizacao-nome"></div>
+                <button class="btn-submit" data-key="atualizacao">📨 ENVIAR REQUERIMENTO</button>
+                <div class="erro-validacao" id="err-atualizacao">Insira a TAG.</div>
+            </div>
+        </div>
+
+        <div class="footer-credit">
+            <i class="fas fa-shield-alt"></i> Desenvolvido por Chefa · Todos os direitos reservados ao DCI
+        </div>
+    </div>
+</div>
+
+<div id="modalConfirm" class="modal-dci">
+    <div class="modal-card">
+        <h3><i class="fas fa-check-circle"></i> Requerimento enviado</h3>
+        <p>Deseja enviar outro requerimento agora?</p>
+        <div class="modal-actions">
+            <button id="btnSim" style="background:#F2BA52; color:#1D4039;">Sim, novo requerimento</button>
+            <button id="btnNao" style="background:#2c5a4e;">Não, fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        const loading = document.getElementById('loadingScreen');
+        setTimeout(() => loading?.classList.add('hide'), 1000);
+
+        const dropdownBtn = document.getElementById('dropdownBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const selectedSpan = document.getElementById('selectedReqText');
+        const allForms = document.querySelectorAll('.form-dci');
+        const botoesSubmit = document.querySelectorAll('.btn-submit');
+        const modal = document.getElementById('modalConfirm');
+        let currentFormElement = null;
+        let currentFormKey = null;
+
+        function hideAllForms(){
+            allForms.forEach(f => f.style.display = 'none');
+        }
+
+        function limparErrosForm(form){
+            form.querySelectorAll('.campo-invalido').forEach(el => el.classList.remove('campo-invalido'));
+            const errDiv = form.querySelector('.erro-validacao');
+            if(errDiv) errDiv.style.display = 'none';
+        }
+
+        function validarFormulario(form, tipo){
+            let isValid = true;
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(inp => {
+                inp.classList.remove('campo-invalido');
+                if(inp.hasAttribute('required') && !inp.value.trim()){
+                    inp.classList.add('campo-invalido');
+                    isValid = false;
+                }
+                if(inp.type === 'number' && inp.min && Number(inp.value) < Number(inp.min)){
+                    inp.classList.add('campo-invalido');
+                    isValid = false;
+                }
+            });
+            const errorDiv = form.querySelector('.erro-validacao');
+            if(errorDiv) errorDiv.style.display = isValid ? 'none' : 'block';
+            return isValid;
+        }
+
+        function coletarDadosForm(form){
+            let dados = {};
+            form.querySelectorAll('input, select, textarea').forEach(campo => {
+                if(campo.id){
+                    let label = campo.id.replace(/^[^-]+-/, '').replace(/-/g, ' ');
+                    label = label.charAt(0).toUpperCase() + label.slice(1);
+                    dados[label] = campo.value.trim();
+                } else {
+                    dados[campo.name || 'info'] = campo.value.trim();
+                }
+            });
+            return dados;
+        }
+
+        function gerarMensagemBBcode(tipo, dados){
+            let titulo = '';
+            switch(tipo){
+                case 'entrada': titulo = 'Entrada de Membros'; break;
+                case 'promocao': titulo = 'Promoção de Membro'; break;
+                case 'rebaixamento': titulo = 'Rebaixamento de Membro'; break;
+                case 'expulsao': titulo = 'Expulsão'; break;
+                case 'advertencia': titulo = 'Advertência'; break;
+                case 'licenca': titulo = 'Licença / Reserva'; break;
+                case 'saida': titulo = 'Saída'; break;
+                case 'prolongamento': titulo = 'Prolongamento de Licença'; break;
+                case 'retorno': titulo = 'Retorno de Licença'; break;
+                case 'alteracao': titulo = 'Alteração de Nickname'; break;
+                case 'atualizacao': titulo = 'Atualização de Listagem'; break;
+                default: titulo = 'Requerimento DCI';
+            }
+            let msg = `[b]📌 ${titulo}[/b]\n\n`;
+            for(let [campo, valor] of Object.entries(dados)){
+                if(valor) msg += `[b]${campo}:[/b] ${valor}\n`;
+            }
+            msg += `\n━━━━━━━━━━━━━━━━━━━━\n[i]Requerimento registrado via sistema DCI.[/i]`;
+            return msg;
+        }
+
+        async function postarNoTopico(mensagem){
+            const replyUrl = '/post?t=37262&mode=reply';
+            const resp = await fetch(replyUrl, { method:'GET', credentials:'same-origin' });
+            const html = await resp.text();
+            if(!resp.ok) throw new Error('Falha ao acessar página de resposta');
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const form = Array.from(doc.forms).find(f => f.querySelector('[name="message"]'));
+            if(!form) throw new Error('Formulário do tópico não encontrado');
+            const bodyParams = new URLSearchParams();
+            for(let field of form.elements){
+                if(!field.name) continue;
+                if((field.type==='checkbox'||field.type==='radio') && !field.checked) continue;
+                bodyParams.append(field.name, field.value || '');
+            }
+            bodyParams.set('message', mensagem);
+            if(!bodyParams.has('post')) bodyParams.append('post','1');
+            const action = form.getAttribute('action') || replyUrl;
+            const send = await fetch(action, {
+                method:'POST',
+                credentials:'same-origin',
+                headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                body: bodyParams.toString()
+            });
+            const textResp = await send.text();
+            if(!send.ok) throw new Error('Erro HTTP ao enviar');
+            if(textResp.toLowerCase().includes('erro') || textResp.toLowerCase().includes('flood'))
+                throw new Error('O fórum reportou um erro ao postar');
+            return true;
+        }
+
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+        document.addEventListener('click', (e) => {
+            if(!dropdownBtn.contains(e.target)) dropdownMenu.classList.remove('show');
+        });
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const tipo = item.getAttribute('data-tipo');
+                selectedSpan.innerText = item.innerText.trim();
+                hideAllForms();
+                const formAlvo = document.getElementById(`form-${tipo}`);
+                if(formAlvo){
+                    formAlvo.style.display = 'block';
+                    currentFormElement = formAlvo;
+                    currentFormKey = tipo;
+                    limparErrosForm(formAlvo);
+                }
+                dropdownMenu.classList.remove('show');
+            });
+        });
+
+        botoesSubmit.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const key = btn.getAttribute('data-key');
+                const formAlvo = document.getElementById(`form-${key}`);
+                if(!formAlvo) return;
+                if(!validarFormulario(formAlvo, key)) return;
+                currentFormElement = formAlvo;
+                currentFormKey = key;
+                modal.classList.add('active');
+            });
+        });
+
+        document.getElementById('btnSim').addEventListener('click', async () => {
+            if(!currentFormElement || !currentFormKey){
+                modal.classList.remove('active');
+                return;
+            }
+            const dados = coletarDadosForm(currentFormElement);
+            const mensagemFinal = gerarMensagemBBcode(currentFormKey, dados);
+            const btnSimRef = document.getElementById('btnSim');
+            const textoOriginal = btnSimRef.innerText;
+            btnSimRef.disabled = true;
+            btnSimRef.innerText = 'Enviando...';
+            try{
+                await postarNoTopico(mensagemFinal);
+                alert('✅ Requerimento postado com sucesso no tópico DCI!');
+                currentFormElement.reset();
+                limparErrosForm(currentFormElement);
+                modal.classList.remove('active');
+            } catch(err){
+                console.error(err);
+                alert('❌ Erro ao enviar: '+ err.message);
+            } finally {
+                btnSimRef.disabled = false;
+                btnSimRef.innerText = textoOriginal;
+            }
+        });
+
+        document.getElementById('btnNao').addEventListener('click', () => {
+            modal.classList.remove('active');
+            hideAllForms();
+            selectedSpan.innerText = 'Selecione o tipo de requerimento';
+            currentFormElement = null;
+            currentFormKey = null;
+        });
+    })();
+</script>
+</body>
+</html>
